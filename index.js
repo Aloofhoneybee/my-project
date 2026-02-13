@@ -13,6 +13,7 @@ const celebrate = () => {
 
 yesBtn.addEventListener('click', celebrate);
 modalYesBtn.addEventListener('click', () => {
+  noModal.style.display = 'none';
   noModal.classList.add('hidden');
   noModal.classList.remove('flex');
   celebrate();
@@ -33,35 +34,45 @@ let imageIndex = 0;
 noBtn.addEventListener('click', () => {
   // Cycle image
   const imgElement = modalContent.querySelector('img');
-  imgElement.src = images[imageIndex];
+  imgElement.src = images[imageIndex] + '?t=' + Date.now();
   imageIndex = (imageIndex + 1) % images.length;
 
+  noModal.style.display = 'flex';
   noModal.classList.remove('hidden');
-  noModal.classList.add('flex');
   // Small timeout to allow transition
   setTimeout(() => {
+    noModal.style.opacity = '1';
     noModal.classList.remove('opacity-0');
+    modalContent.style.transform = 'scale(1)';
     modalContent.classList.remove('scale-90');
     modalContent.classList.add('scale-100');
   }, 10);
 });
 
-// Close modal logic (optional, if they really want to say no)
-// Close modal logic (optional, if they really want to say no)
-modalCloseBtn.addEventListener('click', () => {
-  // Instead of closing, cycle to the next crying cat image
+// Prevent clicks inside the modal content from closing the modal
+modalContent.addEventListener('click', (e) => {
+  e.stopPropagation();
+});
+
+// "Still No" button — cycle to next crying cat image
+modalCloseBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
   const imgElement = modalContent.querySelector('img');
-  imgElement.src = images[imageIndex];
+  imgElement.src = images[imageIndex] + '?t=' + Date.now();
   imageIndex = (imageIndex + 1) % images.length;
 });
 
-// Close modal on outside click
+// Close modal on outside click (clicking the backdrop)
 noModal.addEventListener('click', (e) => {
   if (e.target === noModal) {
+    noModal.style.opacity = '0';
     noModal.classList.add('opacity-0');
+    modalContent.style.transform = 'scale(0.9)';
     modalContent.classList.remove('scale-100');
     modalContent.classList.add('scale-90');
     setTimeout(() => {
+      noModal.style.display = 'none';
       noModal.classList.add('hidden');
       noModal.classList.remove('flex');
     }, 300);
