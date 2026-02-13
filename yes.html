@@ -10,52 +10,429 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 30%, #f48fb1 60%, #ec407a 100%);
+            overflow-x: hidden;
         }
 
         .font-pacifico {
             font-family: 'Pacifico', cursive;
         }
+
+        /* ── Hero section ── */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+        }
+
+        /* ── Story sections ── */
+        .story-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 1.5rem;
+            position: relative;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+        }
+
+        .story-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .story-section:nth-child(even) {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+        }
+
+        .section-divider {
+            font-size: 3rem;
+            letter-spacing: 1rem;
+            opacity: 0.5;
+            margin: 1rem 0;
+        }
+
+        .story-title {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            color: #c62828;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(198, 40, 40, 0.2);
+        }
+
+        .story-text {
+            max-width: 600px;
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            line-height: 1.9;
+            color: #5d4037;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .story-image {
+            width: clamp(200px, 60vw, 320px);
+            height: clamp(200px, 60vw, 320px);
+            object-fit: cover;
+            border-radius: 50%;
+            border: 6px solid white;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            margin: 2rem 0;
+            transition: transform 0.5s ease;
+        }
+
+        .story-image:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .story-image.square {
+            border-radius: 24px;
+        }
+
+        /* ── Appreciation list ── */
+        .appreciation-list {
+            list-style: none;
+            padding: 0;
+            max-width: 550px;
+            text-align: left;
+        }
+
+        .appreciation-list li {
+            font-size: clamp(1rem, 3vw, 1.15rem);
+            color: #5d4037;
+            padding: 0.8rem 1.2rem;
+            margin: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .appreciation-list li.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ── Final section ── */
+        .final-section {
+            background: linear-gradient(135deg, #e91e63 0%, #c62828 50%, #b71c1c 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .final-title {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            50% {
+                text-shadow: 0 4px 40px rgba(255, 255, 255, 0.4), 0 0 80px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .final-text {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            max-width: 500px;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        .final-heart {
+            font-size: 6rem;
+            animation: heartbeat 1.2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            15% {
+                transform: scale(1.15);
+            }
+
+            30% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* ── Scroll indicator ── */
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.7;
+            animation: bob 2s ease-in-out infinite;
+        }
+
+        .scroll-hint span {
+            font-size: 0.85rem;
+            color: #c62828;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .scroll-arrow {
+            width: 24px;
+            height: 24px;
+            border-right: 3px solid #c62828;
+            border-bottom: 3px solid #c62828;
+            transform: rotate(45deg);
+        }
+
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(10px);
+            }
+        }
+
+        /* ── Floating hearts background ── */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            animation: floatUp linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(0) rotate(0deg) scale(0.5);
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(360deg) scale(1);
+            }
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
+        }
     </style>
 </head>
 
-<body
-    class="bg-gradient-to-br from-pink-100 to-red-100 min-h-screen flex flex-col items-center justify-center relative overflow-hidden text-center px-4">
+<body>
 
-    <!-- Background Decoration -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-        <div class="absolute top-10 left-10 text-pink-300 text-6xl opacity-50 animate-pulse">♥</div>
-        <div class="absolute bottom-20 right-20 text-red-300 text-8xl opacity-40 animate-bounce">♥</div>
-    </div>
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 1: HERO / CELEBRATION              -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="hero-section">
+        <h1 class="text-5xl md:text-7xl font-pacifico text-red-500 mb-6 animate-bounce drop-shadow-sm">
+            YAAAY!!! 🎉
+        </h1>
 
-    <h1 class="text-5xl md:text-7xl font-pacifico text-red-500 mb-8 animate-bounce drop-shadow-sm">
-        YAAAY!!! 🎉
-    </h1>
-
-    <!-- Carousel Container -->
-    <div
-        class="relative w-64 h-64 md:w-80 md:h-80 mx-auto mb-8 rounded-full border-8 border-white shadow-2xl overflow-hidden">
-        <div id="carousel" class="flex transition-transform duration-700 ease-in-out h-full">
-            <img src="images/yes/20250727_150108.jpg" alt="Love Memory 1"
-                class="min-w-full h-full object-cover flex-shrink-0">
-            <img src="images/yes/20250727_150111.jpg" alt="Love Memory 2"
-                class="min-w-full h-full object-cover flex-shrink-0">
-            <img src="images/yes/20250727_153536.jpg" alt="Love Memory 3"
-                class="min-w-full h-full object-cover flex-shrink-0">
-            <img src="images/yes/20250727_153539.jpg" alt="Love Memory 4"
-                class="min-w-full h-full object-cover flex-shrink-0">
+        <div
+            class="relative w-64 h-64 md:w-80 md:h-80 mx-auto mb-6 rounded-full border-8 border-white shadow-2xl overflow-hidden">
+            <img src="images/yes/happy-cat-happy.gif" alt="Love Memory" class="w-full h-full object-cover">
         </div>
-    </div>
 
-    <p class="text-2xl md:text-3xl font-bold text-gray-700 mb-8">
-        You made me the happiest person! ❤️
-    </p>
+        <p class="text-2xl md:text-3xl font-bold text-gray-700 mb-4">
+            You made me the happiest person! ❤️
+        </p>
+        <p class="text-lg text-gray-500">Scroll down for a little surprise…</p>
 
-    <!-- Removed Date Picker as requested -->
+        <div class="scroll-hint">
+            <span>OUR STORY</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 2: HOW WE MET                      -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="story-section">
+        <div class="section-divider">♥ ♥ ♥</div>
+        <h2 class="story-title">How We Met 💫</h2>
+        <img src="images/yes/first.jpg" alt="How we met" class="story-image">
+        <div class="story-text">
+            <p>
+                I still remember how we met in that physics class. I don’t even know what compelled me to join the discussion you were having with others about anime, but I’m glad I did. I remember how you took my number, and how we talked for hours that night — just sharing and laughing.
+            </p>
+            <br>
+            <p>
+             Little did I know that moment would lead to such an amazing and wholesome relationship between us.✨
+            </p>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 3: FAVOURITE MEMORIES               -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="story-section">
+        <div class="section-divider">♥ ♥ ♥</div>
+        <h2 class="story-title">My Favourite Memories 📸</h2>
+        <img src="images/yes/20250727_150111.jpg" alt="Favourite memory" class="story-image square">
+        <div class="story-text">
+            <p>
+                Every moment with you is beautiful and memorable,
+                The silly inside jokes that only we understand remeber "annoying boy timmy", the surprise
+                adventures , and even the little everyday things — they're all
+                my favourite because they're with you. 💕 
+            </p>
+            <br>
+            <p>
+                But one that stays especially close to my heart is when we went home 
+                 together during Salah and you rested your head on my shoulder for the first time. It made me feel incredibly happy
+                  and special — it’s a moment I’ll always cherish .
+                
+            </p>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 4: WHAT I APPRECIATE ABOUT YOU     -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="story-section">
+        <div class="section-divider">♥ ♥ ♥</div>
+        <h2 class="story-title">What I Love About You 💖</h2>
+        <img src="images/yes/20250727_153536.jpg" alt="What I appreciate" class="story-image">
+        <div class="story-text">
+        Your smile is so cute, your laughter is contagious, and even your frequent sighs are both funny and endearing. 
+       I find it intriguing how someone who always says she’s weak can be so independent-minded. I admire the way you refuse to settle and always strive 
+       for more for yourself — it’s something I deeply appreciate about you.
+        </div>
+      
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 5: HAPPY VALENTINE'S               -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="story-section final-section">
+        <div class="final-heart">❤️</div>
+        <h2 class="final-title mb-6">Happy Valentine's Day!</h2>
+        <img src="images/yes/20250727_153539.jpg" alt="Us together" class="story-image"
+            style="border-color: rgba(255,255,255,0.7);">
+        <p class="final-text mt-4">
+            You are my everything — my best friend, my favourite person,
+            and the love of my life. Today and every day, I choose you. 🌹
+        </p>
+        <p class="final-text mt-4" style="font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 700;">
+            I love you endlessly 💕
+        </p>
+        <p class="mt-8" style="font-size: 2.5rem;">🥰💐🌹💖🥰</p>
+    </section>
+
+    <!-- Background Audio -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="audio/upload .mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Mute/Unmute Button -->
+    <button id="audio-toggle"
+        style="position:fixed; bottom:24px; right:24px; z-index:999; width:52px; height:52px; border-radius:50%; border:none; background:rgba(255,255,255,0.85); backdrop-filter:blur(8px); box-shadow:0 4px 15px rgba(0,0,0,0.15); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease; font-size:22px;"
+        onmouseenter="this.style.transform='scale(1.12)'" onmouseleave="this.style.transform='scale(1)'"
+        title="Toggle Music">
+        🔊
+    </button>
 
     <script>
-        // Simple confetti on load
+        // ── Background Audio Logic ──
+        (function () {
+            const audio = document.getElementById('bg-audio');
+            const btn = document.getElementById('audio-toggle');
+            let isPlaying = false;
+
+            function updateIcon() {
+                btn.textContent = isPlaying ? '🔊' : '🔇';
+            }
+
+            function tryPlay() {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    updateIcon();
+                }).catch(() => {
+                    isPlaying = false;
+                    updateIcon();
+                });
+            }
+
+            tryPlay();
+
+            btn.addEventListener('click', () => {
+                if (isPlaying) {
+                    audio.pause();
+                    isPlaying = false;
+                } else {
+                    audio.play();
+                    isPlaying = true;
+                }
+                updateIcon();
+            });
+
+            document.addEventListener('click', function startOnInteraction(e) {
+                if (e.target === btn) return;
+                if (!isPlaying) {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        updateIcon();
+                    });
+                }
+                document.removeEventListener('click', startOnInteraction);
+            });
+        })();
+
+        // ── Confetti on Load ──
         const createConfetti = () => {
             for (let i = 0; i < 50; i++) {
                 const confetti = document.createElement('div');
@@ -71,27 +448,81 @@
             }
         };
 
-        // Add confetti styles
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes fall {
-                to { transform: translateY(110vh) rotate(720deg); }
-            }
-        `;
-        document.head.appendChild(style);
 
-        window.onload = createConfetti;
 
-        // Carousel Logic
-        const carousel = document.getElementById('carousel');
-        const images = carousel.querySelectorAll('img');
-        let index = 0;
+        // ── Floating Hearts Background ──
+        function spawnFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.textContent = ['♥', '❤️', '💖', '💕'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.bottom = '-5vh';
+            heart.style.fontSize = (Math.random() * 20 + 14) + 'px';
+            heart.style.animationDuration = (Math.random() * 6 + 6) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 12000);
+        }
+        setInterval(spawnFloatingHeart, 800);
 
-        setInterval(() => {
-            index = (index + 1) % images.length;
-            carousel.style.transform = `translateX(-${index * 100}%)`;
-        }, 3000); // Change image every 3 seconds
+        // ── Intersection Observer: Fade-in sections ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
 
+                    // Stagger appreciation list items
+                    const listItems = entry.target.querySelectorAll('.appreciation-list li');
+                    listItems.forEach((li, i) => {
+                        setTimeout(() => li.classList.add('visible'), i * 200);
+                    });
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.story-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // ── Auto-scroll: Slowly scroll down after a 3s delay ──
+        window.addEventListener('load', () => {
+            createConfetti();
+
+            setTimeout(() => {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const duration = 60000; // 60 seconds for the full scroll
+                const startTime = performance.now();
+                let autoScrollActive = true;
+
+                // Stop auto-scroll if user scrolls manually
+                const stopAutoScroll = () => {
+                    autoScrollActive = false;
+                    window.removeEventListener('wheel', stopAutoScroll);
+                    window.removeEventListener('touchstart', stopAutoScroll);
+                };
+                window.addEventListener('wheel', stopAutoScroll, { passive: true });
+                window.addEventListener('touchstart', stopAutoScroll, { passive: true });
+
+                function smoothScroll(currentTime) {
+                    if (!autoScrollActive) return;
+
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+
+                    // Ease-in-out for a cinematic feel
+                    const eased = progress < 0.5
+                        ? 2 * progress * progress
+                        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+                    window.scrollTo(0, eased * totalHeight);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(smoothScroll);
+                    }
+                }
+
+                requestAnimationFrame(smoothScroll);
+            }, 1500);
+        });
     </script>
 </body>
 

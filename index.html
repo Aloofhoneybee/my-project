@@ -53,8 +53,8 @@
         </h1>
 
         <div class="relative w-64 h-64 md:w-80 md:h-80 mx-auto mb-8">
-            <img src="try.gif" alt="Cute happy animation"
-                class="w-full h-full object-cover rounded-full " id="main-image">
+            <img src="try.gif" alt="Cute happy animation" class="w-full h-full object-cover rounded-full "
+                id="main-image">
         </div>
 
         <div class="flex flex-col md:flex-row gap-6 justify-center items-center mt-8">
@@ -101,6 +101,70 @@
             Replay ❤️
         </button>
     </div>
+
+    <!-- Background Audio -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="audio/romantic-index.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Mute/Unmute Button -->
+    <button id="audio-toggle"
+        style="position:fixed; bottom:24px; right:24px; z-index:999; width:52px; height:52px; border-radius:50%; border:none; background:rgba(255,255,255,0.85); backdrop-filter:blur(8px); box-shadow:0 4px 15px rgba(0,0,0,0.15); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease; font-size:22px;"
+        onmouseenter="this.style.transform='scale(1.12)'" onmouseleave="this.style.transform='scale(1)'"
+        title="Toggle Music">
+        🔊
+    </button>
+
+    <script>
+        // Background audio logic
+        (function () {
+            const audio = document.getElementById('bg-audio');
+            const btn = document.getElementById('audio-toggle');
+            let isPlaying = false;
+
+            function updateIcon() {
+                btn.textContent = isPlaying ? '🔊' : '🔇';
+            }
+
+            function tryPlay() {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    updateIcon();
+                }).catch(() => {
+                    // Autoplay blocked — will play on first interaction
+                    isPlaying = false;
+                    updateIcon();
+                });
+            }
+
+            // Attempt autoplay on load
+            tryPlay();
+
+            // Toggle on button click
+            btn.addEventListener('click', () => {
+                if (isPlaying) {
+                    audio.pause();
+                    isPlaying = false;
+                } else {
+                    audio.play();
+                    isPlaying = true;
+                }
+                updateIcon();
+            });
+
+            // Auto-start on first user interaction if autoplay was blocked
+            document.addEventListener('click', function startOnInteraction(e) {
+                if (e.target === btn) return; // skip if clicking the toggle itself
+                if (!isPlaying) {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        updateIcon();
+                    });
+                }
+                document.removeEventListener('click', startOnInteraction);
+            });
+        })();
+    </script>
 
     <script src="index.js"></script>
 </body>
